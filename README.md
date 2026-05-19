@@ -48,8 +48,6 @@ Source:
 
 ```text
 german-train-delay-analysis/
-│
-├── data/
 │   
 ├── database/
 │   └── train_delay.db
