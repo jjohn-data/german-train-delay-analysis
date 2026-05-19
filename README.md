@@ -37,6 +37,8 @@ The dataset contains German railway stop data, including:
 - timestamps,
 - and geographic coordinates.
 
+Note: The raw CSV file and SQLite database are not included in this repository due to GitHub file size limits. The dataset can be downloaded from Kaggle and imported locally.
+
 Source:
 [Kaggle - Deutsche Bahn Delays Dataset](https://www.kaggle.com/datasets/nokkyu/deutsche-bahn-db-delays)
 
