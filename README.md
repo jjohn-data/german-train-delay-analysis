@@ -48,7 +48,7 @@ Source:
 
 ```text
 german-train-delay-analysis/
-│   
+│
 ├── database/
 │   └── train_delay.db
 │
@@ -98,6 +98,14 @@ Interactive map analysis revealed strong delay clusters around:
 ### Delay Rate by State and Hour
 
 ![State Hour Heatmap](visuals/delay_rate_by_state_and_hour.png)
+
+---
+
+### Interactive Delay Hotspot Map
+
+An interactive Plotly map showing geographic delay hotspots along the Rhine corridor.
+
+[Open Interactive Map](https://jjohn-data.github.io/german-train-delay-analysis/visuals/line26_delay_hotspots_map.html)
 
 ---
 
