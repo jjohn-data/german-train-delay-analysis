@@ -48,9 +48,7 @@ Source:
 german-train-delay-analysis/
 │
 ├── data/
-│   ├── raw/
-│   └── processed/
-│
+│   
 ├── database/
 │   └── train_delay.db
 │
@@ -61,8 +59,6 @@ german-train-delay-analysis/
 │   └── 01_visualization.ipynb
 │
 ├── visuals/
-│
-├── results/
 │
 ├── README.md
 └── .gitignore
