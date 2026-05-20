@@ -49,9 +49,6 @@ Source:
 ```text
 german-train-delay-analysis/
 │
-├── database/
-│   └── train_delay.db
-│
 ├── sql/
 │   └── 01_data_exploration.sql
 │
