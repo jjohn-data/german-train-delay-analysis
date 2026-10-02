@@ -4,6 +4,10 @@
 -- =========================================
 
 
+-- Delay definition used throughout this project:
+-- a stop is classified as delayed when arrival_delay_m >= 6.
+-- Rows with missing arrival-delay values are excluded from delay-rate denominators.
+
 -- =========================================
 -- DATA EXPLORATION
 -- =========================================
@@ -17,7 +21,8 @@ SELECT
     MIN(arrival_plan) AS earliest_date,
     MAX(arrival_plan) AS latest_date
 FROM train_data
-WHERE arrival_plan <> '';
+WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL;
 
 -- Missing arrival timestamps
 SELECT COUNT(*) AS empty_arrival_plan
@@ -32,26 +37,31 @@ WHERE arrival_plan = '';
 
 -- Average arrival delay
 SELECT AVG(arrival_delay_m) AS avg_arrival_delay
-FROM train_data;
+FROM train_data
+WHERE arrival_delay_m IS NOT NULL;
 
 -- Maximum arrival delay
 SELECT MAX(arrival_delay_m) AS max_arrival_delay
-FROM train_data;
+FROM train_data
+WHERE arrival_delay_m IS NOT NULL;
 
 -- Number of delayed stops
 SELECT COUNT(*) AS delayed_stops
 FROM train_data
-WHERE arrival_delay_m >= 6;
+WHERE arrival_delay_m IS NOT NULL
+  AND arrival_delay_m >= 6;
 
 -- Delay percentage
 SELECT 
 (
     (SELECT COUNT(*) 
      FROM train_data 
-     WHERE arrival_delay_m >= 6) * 100.0
+     WHERE arrival_delay_m IS NOT NULL
+       AND arrival_delay_m >= 6) * 100.0
     /
     (SELECT COUNT(*) 
-     FROM train_data)
+     FROM train_data
+     WHERE arrival_delay_m IS NOT NULL)
 ) AS delay_percentage;
 
 -- Punctuality rate
@@ -59,10 +69,12 @@ SELECT
     100 - (
         (SELECT COUNT(*) 
          FROM train_data 
-         WHERE arrival_delay_m >= 6) * 100.0
+         WHERE arrival_delay_m IS NOT NULL
+           AND arrival_delay_m >= 6) * 100.0
         /
         (SELECT COUNT(*) 
-         FROM train_data)
+         FROM train_data
+         WHERE arrival_delay_m IS NOT NULL)
     ) AS punctuality_rate;
 
 
@@ -84,6 +96,7 @@ SELECT
         ELSE 0
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
+WHERE arrival_delay_m IS NOT NULL
 GROUP BY station
 HAVING total_stops > 1000
 ORDER BY delay_rate DESC
@@ -119,6 +132,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY hour
 ORDER BY hour;
 
@@ -144,6 +158,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY weekday
 ORDER BY STRFTIME('%w', arrival_plan);
 
@@ -164,6 +179,7 @@ SELECT
     COUNT(*) AS total_stops
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY delay_category
 ORDER BY total_stops DESC;
 
@@ -186,6 +202,7 @@ SELECT
         ELSE 0
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
+WHERE arrival_delay_m IS NOT NULL
 GROUP BY category
 HAVING total_stops > 1000
 ORDER BY category;
@@ -210,6 +227,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY line
 HAVING total_stops > 1000
 ORDER BY delayed_stops DESC
@@ -229,6 +247,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY line
 HAVING total_stops > 1000
 ORDER BY delay_rate DESC
@@ -254,6 +273,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY state
 ORDER BY delay_rate DESC;
 
@@ -272,6 +292,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 GROUP BY state, hour
 HAVING total_stops > 1000
 ORDER BY delay_rate DESC
@@ -298,6 +319,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 AND state = 'Rheinland-Pfalz'
 GROUP BY line
 HAVING total_stops > 1000
@@ -318,6 +340,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 AND line = '26'
 GROUP BY hour
 ORDER BY hour;
@@ -336,6 +359,7 @@ SELECT
     END) * 100.0 / COUNT(*) AS delay_rate
 FROM train_data
 WHERE arrival_plan <> ''
+  AND arrival_delay_m IS NOT NULL
 AND line = '26'
 GROUP BY station
 HAVING total_stops > 100
